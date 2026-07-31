@@ -13,6 +13,7 @@
   /* ✏️ Color oscuro (header, footer, textos) */
   --color-oscuro:      #1e293b;
 
+
   /* ✏️ Color de fondo general de la página */
   --color-fondo:       #f8fafc;
 
@@ -1064,7 +1065,7 @@ body.tema-oscuro .modal-desc {
 
 .carrito-item-nombre {
   font-weight: 700;
-  color: var(--color-oscuro);
+  color: var(--color-texto);
 }
 
 .carrito-item-precio {
@@ -1088,4 +1089,16 @@ body.tema-oscuro .modal-desc {
   text-align: center;
   padding: 40px;
   color: var(--color-texto-suave);
+}
+/* ===== S08: ERROR FETCH ===== */
+.error-fetch {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 32px;
+  color: #ef4444;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
