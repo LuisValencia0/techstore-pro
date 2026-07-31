@@ -29,6 +29,8 @@
   /* ✏️ Color del borde de tarjetas y separadores */
   --color-borde:       #e2e8f0;
 
+  
+
   /* Radio de bordes (no es necesario cambiar) */
   --radio:             10px;
   --radio-grande:      16px;
@@ -969,6 +971,7 @@ a:hover { color: var(--color-secundario); }
   border-color: rgba(255, 255, 255, 0.4);
 }
 
+
 /* Variables del tema oscuro */
 body.tema-oscuro {
   --color-fondo: #0f172a;
@@ -976,10 +979,21 @@ body.tema-oscuro {
   --color-texto: #e2e8f0;
   --color-texto-suave: #94a3b8;
   --color-borde: #334155;
+  --color-oscuro: #f3f5f8; 
+
+}
+body.tema-oscuro .header{
+  background-color: #0a1d31;
+}
+body.tema-oscuro .page-header {
+  background-color: #152c45;
 }
 
 body.tema-oscuro .seccion-header h2 {
   color: #f1f5f9;
+}
+body.tema-oscuro .hero{
+  color: #1e293b;
 }
 
 body.tema-oscuro .tarjeta {
@@ -1102,3 +1116,4 @@ body.tema-oscuro .modal-desc {
   align-items: center;
   gap: 16px;
 }
+
