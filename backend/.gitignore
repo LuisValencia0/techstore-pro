@@ -1,5 +1,5 @@
 # nunca subir a GitHub
 
 node_modules/
-env.
+.env
 login.md
