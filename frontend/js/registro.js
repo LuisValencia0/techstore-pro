@@ -86,63 +86,84 @@ selectDepto.addEventListener('change', function() {
 
 // ── PASO 4: Validar y guardar el registro en LocalStorage ────────────────────
 if (formRegistro) {
-  formRegistro.addEventListener('submit', function(evento) {
+  formRegistro.addEventListener('submit', async function(evento) {
     evento.preventDefault();
 
     const nombre      = document.querySelector('#reg-nombre').value.trim();
     const email       = document.querySelector('#reg-email').value.trim();
+    const password    = document.querySelector('#reg-password').value;
     const departamento = selectDepto.options[selectDepto.selectedIndex].text;
     const municipio   = selectMuni.value;
     let hayErrores    = false;
+
+    document.querySelector('#error-reg-nombre').textContent       = '';
+    document.querySelector('#error-reg-email').textContent        = '';
+    document.querySelector('#error-reg-password').textContent     = '';
+    document.querySelector('#error-reg-departamento').textContent = '';
+    document.querySelector('#error-reg-municipio').textContent    = '';
+
 
     // Validar nombre
     if (nombre.length < 3) {
       document.querySelector('#error-reg-nombre').textContent = 'Escribe tu nombre completo';
       hayErrores = true;
-    } else {
-      document.querySelector('#error-reg-nombre').textContent = '';
-    }
+    } 
 
     // Validar email
     if (!email.includes('@') || email.length < 5) {
       document.querySelector('#error-reg-email').textContent = 'Ingresa un correo válido';
       hayErrores = true;
-    } else {
-      document.querySelector('#error-reg-email').textContent = '';
-    }
-
+    } 
+    // Validar password
+    if (password.length < 6) {
+      document.querySelector('#error-reg-password').textContent = 'La contraseña debe tener al menos 6 caracteres';
+      hayErrores = true;
+    } 
+      
     // Validar departamento
     if (!selectDepto.value) {
       document.querySelector('#error-reg-departamento').textContent = 'Selecciona un departamento';
       hayErrores = true;
-    } else {
-      document.querySelector('#error-reg-departamento').textContent = '';
-    }
+    } 
 
     // Validar municipio
     if (!municipio) {
       document.querySelector('#error-reg-municipio').textContent = 'Selecciona un municipio';
       hayErrores = true;
-    } else {
-      document.querySelector('#error-reg-municipio').textContent = '';
-    }
+    } 
+  
 
     if (!hayErrores) {
-      // Guardar en LocalStorage
-      const usuario = {
-        nombre,
-        email,
-        departamento,
-        municipio,
-        fecha: new Date().toLocaleDateString('es-CO')
-      };
-      localStorage.setItem('usuario-registro', JSON.stringify(usuario));
+      try{
+        const respuesta = await fetch('http://localhost:4000/api/auth/registro', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre:       nombre,
+            email:        email,
+            password:     password,
+            departamento: selectDepto.options[selectDepto.selectedIndex].textContent,
+            municipio:    municipio
+          })
+        })
 
-      // Mostrar mensaje de éxito
-      document.querySelector('#registro-exito').style.display = 'block';
-      formRegistro.reset();
-      selectMuni.innerHTML = '<option value="">Primero elige un departamento</option>';
-      selectMuni.disabled  = true;
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+          document.querySelector('#error-reg-email').textContent =
+            datos.error || 'Error al crear la cuenta';
+          return;
+        }
+
+        document.querySelector('#registro-exito').style.display = 'block';
+        formRegistro.reset();
+        selectMuni.innerHTML = '<option value="">Primero elige un departamento</option>';
+        selectMuni.disabled = true;
+
+      } catch (error) {
+        document.querySelector('#error-reg-nombre').textContent =
+        'No se pudo conectar. Verificar que npm run dev este corriendo.';
+      }
     }
   });
 }

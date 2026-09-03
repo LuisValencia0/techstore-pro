@@ -184,7 +184,7 @@ async function cargarProductos() {
   try {
     // PASO 1 — Pedir el archivo JSON al servidor
     // await pausa aquí hasta que llegue la respuesta (el sobre)
-    const respuesta = await fetch('data/productos.json');
+    const respuesta = await fetch('http://localhost:4000/api/productos');
 
     // PASO 2 — Leer el contenido del JSON como array JavaScript
     // .json() también es asíncrono → necesita su propio await

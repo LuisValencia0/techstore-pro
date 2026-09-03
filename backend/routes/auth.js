@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/registro", async (req, res) => {
     try{
-    const { nombre, email, password, rol } = req.body;
+    const { nombre, email, departamento, municipio, password, rol } = req.body;
 
     // Verificar que el email no exista ya
     const existe = await Usuario.findOne({ email });
@@ -20,7 +20,7 @@ router.post("/registro", async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     // Guardar el usuario con la contraseña encriptada
-    const usuario = await Usuario.create({ nombre, email, password: hash, rol });
+    const usuario = await Usuario.create({ nombre, email, password, departamento, municipio: hash, rol });
 
     res.status(201).json({ mensaje: "Usuario creado correctamente", id: 
 usuario._id});

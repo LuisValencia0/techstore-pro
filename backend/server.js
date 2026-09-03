@@ -22,14 +22,11 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Conectado a MongoDB Atlas'))
   .catch((err) => console.error('❌ Error de conexión:', err));
 
-
-
-
-
 // 9. Ruta de prueba
 app.get('/', (req, res) => {
   res.json({ mensaje: 'Servidor TechStore Pro ✅' });
 });
+
 
 // 10. Arrancar el servidor
 app.listen(PORT, () => {
