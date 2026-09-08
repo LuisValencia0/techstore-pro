@@ -138,6 +138,20 @@ a:hover { color: var(--color-secundario); }
   color: white;
   background: var(--color-primario);
 }
+/*Boton login en el header-derecha*/
+.btn-login-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  background: var(--color-primario);
+  padding: 7px 18px;
+  border-radius: 8px;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.btn-login-header:hover {
+  opacity: .85;
+}
 
 /* Botón hamburguesa — visible solo en móvil */
 .menu-toggle {
@@ -1078,6 +1092,14 @@ body.tema-oscuro .modal-desc {
 
 .carrito-item-icono {
   font-size: 32px;
+}
+
+.carrito-item-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .carrito-item-info {
