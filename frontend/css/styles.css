@@ -1146,3 +1146,109 @@ body.tema-oscuro .modal-desc {
   gap: 16px;
 }
 
+/* 
+s17d: PAGINA DE PRODUCTO  INDIVIDUAL
+Aplica solo en producto.html  */
+
+/* Contenedor principal - imagen a la izquierda, info a la derecha */
+.producto-detalle {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* lado izquierdo - imagen del producto */
+.producto-imagen-wrap {
+  flex: 1 1 300px;
+  max-width: 400px;
+}
+
+/* La imagen ocupa todo el ancho de su contenedor */
+.producto-imagen-wrap img {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  object-fit: cover;
+}
+
+/* Si no hay imagen, mostrar el emoji centrado en un cuadrado */
+.producto-imagen-placeholder {
+  width: 100%;
+  aspect-ratio: 1; /* cuadrado perfecto */
+  background: #f3f4f6;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+}
+
+/*  lado derecho - informacion del producto */
+.producto-info {
+  flex: 1 1 280px;
+}
+
+/* Nombre grande del producto */
+.producto-nombre {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+/* Precio estacado en azul */
+.producto-precio {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 20px;
+}
+
+/* Descripcion con buena legibilidad */
+.producto-descripcion {
+  color: #4b5563;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* Fila de botones de accion */
+.producto-acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Estado de carga y error - centrados en la página */
+.producto-cargando,
+.producto-error {
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+/* Botón "<- volver a productos" con borde */
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+.btn-volver:hover { border-color: #6b7280; }
+
+/* - modo oscuro - */
+.tema-oscuro .producto-imagen-placeholder { background: #1f2937; }
+.tema-oscuro .producto-descripcion        { color: #9ca3af; }
+.tema-oscuro .btn-volver                  { color: #d1d5db; border-color: #374151; }
+.tema-oscuro .btn-volver:hover            { border-color: #6b7280; }
+
