@@ -18,7 +18,7 @@ formLogin.addEventListener('submit', async function(evento) {
         document.querySelector('#error-login-email').textContent = 'Ingresa tu correo';
         return;
     }
-    if (!email) {
+    if (!password) {
         document.querySelector('#error-login-password').textContent = 'Ingresa tu contraseña';
         return;
     }

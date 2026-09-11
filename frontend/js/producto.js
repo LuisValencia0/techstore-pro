@@ -19,5 +19,33 @@ async function cargarProductoDetalle() {
         // 4. Llenar el DOM con los datos del producto
         document.getElementById('producto-nombre').textContent      =producto.nombre;
         document.getElementById('producto-precio').textContent      =producto.precio;
+        document.getElementById('producto-descripcion').textContent =producto.descripcion;
+
+        // 4b. Imagen: si tiene -> <img>, si no  -> emoji como placeholder
+        const imgWrap = document.getElementById('producto-imagen-wrap');
+        imgWrap.innerHTML = producto.imagen
+            ? `<img src="${producto.imagen}" alt="${producto.nombre}">`
+            : `<div class="producto-imagen-placeholder">${producto.icono || '📦'}</div>`;
+        
+        // 5. Mostrar el contenido
+        elCargando.style.display = 'none';
+        elDetalle.style.display  = 'flex';
+
+        // 6. Botón agregar al carrito - agregarAlCarrito() viene de main.js
+        document.getElementById('btn-agregar-carrito').addEventListener('click', function() {
+            agregarAlCarrito({ id: producto._id, nombre: producto.nombre,
+                precio: producto.precio, icono: producto.icono || '📦',
+                imagen: producto.imagen || '', fecha: new Date().toLocaleDateString('es-CO')});
+            const msg = document.getElementById('producto-mensaje');
+            msg.innerHTML = '<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;">'
+            + '<p style="color:#15803d;font-weight:600;">✅ Agregado - <a href="carrito.html" style="color:#166534;">Ver carrito</a></p></div>';
+            msg.style.display = 'block';
+        });
+
+    } catch (err) {
+        elCargando.style.display = 'none';
+        elError.style.display    = 'block';
     }
 }
+
+cargarProductoDetalle();
