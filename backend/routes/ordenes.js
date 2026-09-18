@@ -1,6 +1,7 @@
 const express       = require('express');
 const Orden         = require('../models/Orden');
 const verificarToken = require('../middleware/auth');
+const verificarAdmin = require('../middleware/admin'); 
 const router        = express.Router();
 
 // POST /api/ordenes - crear una orden
@@ -18,6 +19,50 @@ router.post('/', verificarToken, async (req, res) => {
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
+});
+
+// PATCH /api/ordenes/:id/estado — el admin cambia el estado de una orden
+const ESTADOS_VALIDOS = ['PAGO_CONFIRMADO', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'PENDIENTE'];
+
+// backend/routes/ordenes.js
+router.patch('/:id/estado', verificarToken, verificarAdmin, async (req, res) => {
+  try {
+    const { estado } = req.body;
+
+    // Convertimos a mayúsculas para evitar errores si el frontend manda minúsculas
+    const estadoUpper = estado ? estado.toUpperCase() : ''; 
+
+    if (!ESTADOS_VALIDOS.includes(estadoUpper)) {
+      return res.status(400).json({ error: `Estado inválido: ${estado}` });
+    }
+
+    const orden = await Orden.findByIdAndUpdate(
+      req.params.id,
+      { estado: estadoUpper },
+      { returnDocument: 'after' } // <-- Cambiado para quitar el warning de Node
+    );
+
+    if (!orden) return res.status(404).json({ error: 'Orden no encontrada' });
+    res.json(orden);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+
+// GET /api/ordenes/admin/todas — el admin ve TODAS las órdenes de todos los usuarios
+// Declarada antes de "GET /" para no chocar con futuras rutas GET /:id
+router.get('/admin/todas', verificarToken, verificarAdmin, async (req, res) => {
+  try {
+    const ordenes = await Orden
+      .find({})
+      .populate('usuario', 'nombre email')
+      .populate('productos.producto', 'nombre precio')
+      .sort({ createdAt: -1 });
+    res.json(ordenes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // GET/ api/ordenes - mis ordenes

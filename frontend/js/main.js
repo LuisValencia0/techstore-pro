@@ -487,6 +487,7 @@ mostrarPaginaCarrito(); // llamar al cargar
 function actualizarNavSesion() {
   const token       = localStorage.getItem('token');
   const nombre      = localStorage.getItem('usuario-nombre');
+  const rol    = localStorage.getItem('usuario-rol');
   const enlaceLogin = document.querySelector('#nav-login');
   if (!enlaceLogin) return;
 
@@ -503,20 +504,34 @@ function actualizarNavSesion() {
       menu.className = 'usuario-menu';
       const linkPerfil = document.createElement('a');
       linkPerfil.href = 'perfil.html'; linkPerfil.textContent = '👤 Mi perfil';
+
       const linkPedidos = document.createElement('a');
-      linkPedidos.href = 'mispedidos.html'; linkPedidos.textContent = '📦 Mis pedidos';
+      linkPedidos.href = 'mispedidos.html'; 
+      linkPedidos.textContent = '📦 Mis pedidos';
+
+      // Opción: Panel Admin — solo visible si el usuario tiene rol 'admin'
+      const linkAdmin = document.createElement('a');
+      linkAdmin.href        = 'admin.html';
+      linkAdmin.textContent = '🛠️ Panel Admin';
+
       const sep = document.createElement('div');
       sep.className = 'menu-separador';
       const btnCerrar = document.createElement('button');
       btnCerrar.className = 'btn-cerrar-sesion';
       btnCerrar.textContent = '🚪 Cerrar sesión';
       btnCerrar.addEventListener('click', function() {
-          localStorage.removeItem('token'); localStorage.removeItem('usuario-nombre');
+          localStorage.removeItem('token'); 
+          localStorage.removeItem('usuario-nombre');
+          localStorage.removeItem('usuario-rol');
           window.location.href = 'login.html';
       });
-      menu.appendChild(linkPerfil); menu.appendChild(linkPedidos);
-      menu.appendChild(sep); menu.appendChild(btnCerrar);
-      wrapper.appendChild(btn); wrapper.appendChild(menu);
+      menu.appendChild(linkPerfil); 
+      menu.appendChild(linkPedidos);
+      if (rol === 'admin') menu.appendChild(linkAdmin);
+      menu.appendChild(sep); 
+      menu.appendChild(btnCerrar);
+      wrapper.appendChild(btn); 
+      wrapper.appendChild(menu);
 
       // 3. Ocultar "Registro" - no tiene sentido estando logueado
       const navMenu = document.querySelector('#nav-menu');
@@ -656,7 +671,7 @@ function iniciarPolling(reference, token, mensaje) {
     }
 
     try {
-      const r = await fetch('http://localhost:3000/api/pagos/estado/' + reference, {
+      const r = await fetch('http://localhost:4000/api/pagos/estado/' + reference, {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       const data = await r.json();

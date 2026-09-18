@@ -26,7 +26,7 @@ const ordenSchema = new Schema({
     estado: {
         type: String,
         default: 'pendiente',
-        enum: ['pendiente', 'procesando', 'enviado', 'entregado', 'PAGO CONFIRMADO']
+        enum: ['pendiente', 'procesando', 'enviado', 'entregado', 'PAGO_CONFIRMADO']
     },
       // Datos de Wompi — se llenan solo cuando el pago fue aprobado
     wompiTransactionId: { type: String },

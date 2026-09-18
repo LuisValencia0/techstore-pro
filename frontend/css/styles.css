@@ -5,17 +5,17 @@
    ============================================================ */
 :root {
   /* ✏️ Color principal de tu marca (botones, enlaces activos, acentos) */
-  --color-primario:    #2563eb;
+  --color-primario:    #2d6bf0;
 
   /* ✏️ Color secundario (hover, detalles) */
-  --color-secundario:  #1d4ed8;
+  --color-secundario:  #1d4fd8fe;
 
   /* ✏️ Color oscuro (header, footer, textos) */
   --color-oscuro:      #1e293b;
 
 
   /* ✏️ Color de fondo general de la página */
-  --color-fondo:       #f8fafc;
+  --color-fondo:       #9bc6f65b;
 
   /* ✏️ Color de fondo de las tarjetas */
   --color-blanco:      #ffffff;
@@ -208,7 +208,7 @@ a:hover { color: var(--color-secundario); }
 
 .btn-secundario {
   background-color: transparent;
-  color: var(--color-primario);
+  color: white;
   border-color: var(--color-primario);
 }
 
@@ -222,7 +222,7 @@ a:hover { color: var(--color-secundario); }
    ============================================================ */
 .hero {
   /* ✏️ Cambia el gradiente por los colores de tu proyecto */
-  background: linear-gradient(135deg, var(--color-oscuro) 0%, #1e3a5f 100%);
+  background: linear-gradient(160deg, var(--color-oscuro  ) 0%, #1b7af6 60%);
   color: white;
   padding: 100px 32px;
   min-height: 500px;
@@ -250,7 +250,7 @@ a:hover { color: var(--color-secundario); }
 
 .hero-destacado {
   /* ✏️ Color del texto destacado en el hero */
-  color: #93c5fd;
+  color: #081b34;
 }
 
 .hero p {
@@ -1318,6 +1318,25 @@ Aplica solo en producto.html  */
   letter-spacing: 0.05em;
 }
 
+/* junto a las demás .badge-estado.* */
+.badge-estado.procesando { background: #ede9fe; color: #5b21b6; }
+
+/* Selector de estado editable — usado en admin.html */
+.selector-estado {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #374151;
+  cursor: pointer;
+}
+
+/* modo oscuro */
+.tema-oscuro .badge-estado.procesando { background: #2e1065; color: #c4b5fd; }
+.tema-oscuro .selector-estado         { background: #1f2937; border-color: #374151; color: #e5e7eb; }
+
 .badge-estado.pendiente   { background: #fef9c3; color: #854d0e; }
 .badge-estado.enviado     { background: #dbeafe; color: #1e40af; }
 .badge-estado.entregado   { background: #dcfce7; color: #166534; }
@@ -1530,3 +1549,86 @@ Aplica solo en producto.html  */
 .tema-oscuro .perfil-campo      { background: #111827; }
 .tema-oscuro .perfil-etiqueta   { color: #9ca3af; }
 .tema-oscuro .perfil-valor      { color: #f9fafb; }
+
+/* Línea de tiempo del pedido — usada en mispedidos.js y admin.js (js/timeline.js) */
+.timeline-pedido { display: flex; align-items: center; margin: 16px 0; padding-top: 12px; border-top: 1px solid #f3f4f6; }
+.timeline-paso   { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
+.timeline-punto  { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                    font-size: 0.9rem; background: #f3f4f6; border: 2px solid #e5e7eb; filter: grayscale(1); opacity: 0.5; }
+.timeline-texto  { font-size: 0.7rem; color: #9ca3af; font-weight: 600; text-align: center; white-space: nowrap; }
+.timeline-linea  { flex: 1; height: 2px; background: #e5e7eb; margin: 0 4px; margin-bottom: 22px; }
+
+.timeline-paso.completado .timeline-punto,
+.timeline-paso.activo .timeline-punto     { filter: none; opacity: 1; background: #dcfce7; border-color: #166534; }
+.timeline-paso.completado .timeline-texto,
+.timeline-paso.activo .timeline-texto     { color: #166534; }
+.timeline-paso.activo .timeline-punto     { background: #39a900; border-color: #2d8400; box-shadow: 0 0 0 4px rgba(57,169,0,0.15); }
+.timeline-paso.activo .timeline-texto     { color: #2d8400; font-weight: 800; }
+
+/* modo oscuro */
+.tema-oscuro .timeline-pedido { border-color: #374151; }
+.tema-oscuro .timeline-punto  { background: #374151; border-color: #4b5563; }
+.tema-oscuro .timeline-texto  { color: #6b7280; }
+.tema-oscuro .timeline-linea  { background: #374151; }
+.tema-oscuro .timeline-paso.completado .timeline-punto,
+.tema-oscuro .timeline-paso.activo .timeline-punto { background: #14432a; border-color: #22c55e; }
+.tema-oscuro .timeline-paso.completado .timeline-texto,
+.tema-oscuro .timeline-paso.activo .timeline-texto { color: #86efac; }
+.tema-oscuro .timeline-paso.activo .timeline-punto { background: #39a900; border-color: #86efac; }
+
+
+/* 1. Separar las tarjetas dentro del listado */
+#pedidos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;          /* ¡ESTO ES CLAVE! Crea una separación limpia de 28px entre cada pedido */
+  padding-top: 20px;
+}
+
+/* 2. Convertir cada pedido en un contenedor/tarjeta con relieve */
+.pedido-card {
+  background-color: #111827; /* Un fondo oscuro independiente (ajusta el tono si tu fondo general es distinto) */
+  border: 1px solid #1f2937;  /* Un borde sutil para delimitar dónde empieza y termina el pedido */
+  border-radius: 12px;        /* Bordes redondeados para un aspecto moderno */
+  padding: 24px;              /* Espacio interno para que el contenido no toque los bordes */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* Sombra suave para dar efecto de flotado/relieve */
+}
+
+/* 3. Estilizar el encabezado del pedido (Fecha y Estado) */
+.pedido-encabezado {
+  display: flex;
+  justify-content: space-between; /* Manda la fecha a la izquierda y el estado a la derecha */
+  align-items: center;
+  border-bottom: 1px solid #1f2937; /* Línea divisoria sutil */
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+/* 4. Separar la lista de productos */
+.pedido-productos {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.pedido-productos li {
+  padding: 6px 0;
+  color: #e5e7eb;
+}
+
+/* 5. Darle espacio a la línea de tiempo */
+.timeline-wrap {
+  margin: 28px 0;
+  padding: 10px 0;
+}
+
+/* 6. Estilizar la sección del Total */
+.pedido-total {
+  text-align: right;          /* Alinea el precio a la derecha */
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #38bdf8;             /* Color destacado para el dinero */
+  border-top: 1px solid #1f2937;  /* Línea divisoria sobre el total */
+  padding-top: 14px;
+  margin-top: 20px;
+}

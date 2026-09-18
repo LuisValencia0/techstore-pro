@@ -5,7 +5,7 @@ const formLogin = document.querySelector('#form-login');
 formLogin.addEventListener('submit', async function(evento) {
     evento.preventDefault();
 
-    // Limpiar errores anteiores
+    // Limpiar errores anteriores
     document.querySelector('#error-login-email').textContent = '';
     document.querySelector('#error-login-password').textContent = '';
 
@@ -42,17 +42,15 @@ formLogin.addEventListener('submit', async function(evento) {
         // 4b. login exitoso - guardar token
         localStorage.setItem('token', datos.token);
         localStorage.setItem('usuario-nombre', datos.nombre);
+        localStorage.setItem('usuario-rol', datos.rol);
 
-        // 5. Mostrar mensaje de bienvenida
-        const exito = document.querySelector('#login-exito');
-        exito.innerHTML = '<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:12px;padding:20px";">'
-        + '<p style="color:#15803d;font-weight:700;">✅ Bienvenido, ' + datos.nombre + '</p></div>';
-        exito.style.display = 'block';
+        // 5. CORRECCIÓN: Redirección inmediata al index en lugar de mostrar bienvenida
         formLogin.reset();
+        window.location.href = 'index.html';
      
     }   catch (error) {
         // 6. Error de red
         document.querySelector('#error-login-email').textContent =
-        'No se pudo conectar. Verifica que np, run dev este corriendo.';
+        'No se pudo conectar. Verifica que npm run dev este corriendo.';
     }
-}); 
+});
