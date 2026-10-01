@@ -1,38 +1,23 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const { DataTypes } = require('sequelize');
 
-const ordenSchema = new Schema({
-
-    // ¿quien hizo la orden? -> referencia al _id de un usuario
-    usuario: {
-        type: Schema.Types.ObjectId,
-        ref: 'Usuario',
-        require: true
-    },
-    
-    // Arreglo de productos con cantidad
-    productos: [{
-        producto: {
-            type: Schema.Types.ObjectId,
-            ref: 'Producto'
+module.exports = (sequelize) => {
+    return sequelize.define('Orden', {
+        id: {
+            type: DataTypes.STRING(24),
+            primaryKey: true
         },
-        cantidad: { type: Number, required: true, min: 1 }
-    }],
-
-    // Total calculado en frontend (o en una ruta)
-    total: { type: Number, required: true },
-
-    // Estado del ciclo de vida de la orden
-    estado: {
-        type: String,
-        default: 'pendiente',
-        enum: ['pendiente', 'procesando', 'enviado', 'entregado', 'PAGO_CONFIRMADO']
-    },
-      // Datos de Wompi — se llenan solo cuando el pago fue aprobado
-    wompiTransactionId: { type: String },
-    wompiReference:     { type: String }
-    
-}, { timestamps: true }); //agrega createdAt y updatedAt
-
-const Orden = mongoose.model('Orden', ordenSchema);
-module.exports = Orden;
+        usuario_id: {
+            type: DataTypes.STRING(24),
+            allowNull: false,
+            field: 'usuario_id'
+        },
+        total:              { type: DataTypes.BIGINT, allowNull: false },
+        estado:             { type: DataTypes.STRING(50), allowNull: false, defaultValue: 'pendiente' },
+        wompiTransactionId: { type: DataTypes.STRING, allowNull: true },
+        wompiReference:     { type: DataTypes.STRING, allowNull: true },
+        v:                  { type: DataTypes.INTEGER, defaultValue: 0 }
+    }, {
+        tableName: 'ordens',
+        timestamps: true
+    });
+};

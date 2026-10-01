@@ -1,21 +1,17 @@
-//1 . importar Mongoose
+const { DataTypes } = require('sequelize');
 
-const mongoose = require('mongoose');
-
-//2 . Schema del usuario
-
-const usuarioSchema = new mongoose.Schema({
-    nombre:         { type: String, require: true },
-    email:          { type: String, require: true, unique: true },
-    departamento:   { type: String, require: true },
-    municipio:      { type: String, require: true },
-    password:       { type: String, require: true },
-    rol:            { type: String,
-                enum: ['admin', 'cliente'],
-                default: 'cliente' }
-});
-
-//3 . Exportar el Model
-
-const Usuario = mongoose.model( 'Usuario', usuarioSchema );
-module.exports = Usuario;
+module.exports = (sequelize) => {
+    return sequelize.define('Usuario', {
+        id:           { type: DataTypes.STRING(24), primaryKey: true },
+        nombre:       { type: DataTypes.STRING, allowNull: false },
+        email:        { type: DataTypes.STRING, allowNull: false, unique: true },
+        departamento: { type: DataTypes.STRING, allowNull: false },
+        municipio:    { type: DataTypes.STRING, allowNull: false },
+        password:     { type: DataTypes.STRING, allowNull: false },
+        rol:          { type: DataTypes.STRING(50), defaultValue: 'cliente' },
+        v:            { type: DataTypes.INTEGER, defaultValue: 0 }
+    }, {
+        tableName: 'usuarios',
+        timestamps: false
+    });
+};
