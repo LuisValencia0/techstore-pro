@@ -1,3 +1,4 @@
+import { useState } from "react"
 import Navbar from "./Navbar.jsx"
 import Footer from "./Footer.jsx"
 import ProductCard from "./ProductCard.jsx"
@@ -35,14 +36,28 @@ const productos = [
 
 
 function App() {
+  const [busqueda, setBusqueda] = useState("")
   return (
-  <main className="bg-gradient-to-br from-blue-400 to-purple-700
- min-h-screen max-w-6xl mx-auto px-6 py-10 flex flex-col justify-between gap-10">
+  <main className="bg-gradient-to-br from-blue-400 to-purple-700 min-h-screen max-w-6xl mx-auto px-6 py-10 flex flex-col justify-between gap-10">
       
       <Navbar />
+      <div className="flex item-center gap-3">
+        <input 
+        type="text" 
+        placeholder="Buscar Producto..."
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        className="w-full max-w-md px-4 py-2 border-2 border-slate-200 rounded-lg"
+        />
+        <p className="text-sm text-black whitespace-nowrap">
+          {productos.filter((p) => p.nombre.toLowerCase().includes(busqueda.toLowerCase())).length} productos(s) encontrado(s)
+        </p>
+      </div>
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {productos.map((p) => (
+        {productos
+        .filter((p) => p.nombre.toLowerCase().includes(busqueda.toLowerCase()))
+        .map((p) => (
           <ProductCard
           key={p.nombre}
           nombre={p.nombre}
@@ -53,6 +68,12 @@ function App() {
           />
         ))}
       </section>
+
+      {productos.filter((p) => p.nombre.toLowerCase().includes(busqueda.toLowerCase())).length === 0 && (
+       <p className="text-center text-black py-10">
+        No se encontraron productos con ese nombre
+       </p> 
+      )}
 
       <Footer />
 
