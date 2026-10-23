@@ -9,6 +9,7 @@ const verifivarToken = require('./middleware/auth');
 const productosRoutes = require('./routes/productos');
 const ordenesRoutes = require('./routes/ordenes');
 const pagoRoutes      = require('./routes/pago'); 
+const contactoRoutes = require('./routes/contacto');
 
 // 2. Crear la aplicación y definir el puerto
 const app  = express();
@@ -45,3 +46,6 @@ app.use('/api/ordenes', ordenesRoutes);
 
 // 14. Ruta de pagos
 app.use('/api/pagos', pagoRoutes);
+
+// 15. Rutas de contacto 
+app.use('/api/contacto', contactoRoutes);

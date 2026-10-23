@@ -1,10 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  --color-verde: #39a900;
-  --color-verde-dark: #2d8400;
-  --color-naranja: #ff6b00;
-  --color-azul: #3b82f6;
-  --color-texto: #1a1a2e;
-  --color-texto-dim: #64748b;
+  /* Base — Fondo oscuro con matiz morado y texto claro */
+  --color-ink: #EDEBF5;      /* Antes negro, ahora blanco roto/lavanda para textos */
+  --color-paper: #12101A;    /* Antes blanco, ahora un gris muy oscuro con tinte morado */
+
+  /* Escala de grises adaptada al modo oscuro (Superficies y textos) */
+  /* Ojo: en Tailwind, 50 suele ser lo más claro y 700 lo más oscuro. 
+     Como invertimos el modo, 50 será el fondo de las tarjetas y 700 el texto secundario */
+  --color-gray-50: #1C1A2B;  /* Superficie de tarjetas (un escalón más claro que el paper) */
+  --color-gray-100: #252238; /* Hover de tarjetas o inputs */
+  --color-gray-300: #3A3654; /* Bordes sutiles */
+  --color-gray-500: #8E88A8; /* Texto secundario o placeholders */
+  --color-gray-700: #C5C0D6; /* Texto casi principal (para descripciones) */
+
+  /* Acento de marca — Morado/Azul (Reemplaza al naranja) */
+  --color-accent: #7C5CFF;       /* Violeta eléctrico suave (Botones primarios) */
+  --color-accent-dark: #4A6CF7;  /* Azul medio (Para hover o gradientes) */
+
+  /* Tipografía (Se mantiene igual, es excelente) */
+  --font-wordmark: 'Michroma', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
 }

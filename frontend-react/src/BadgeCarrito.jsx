@@ -7,7 +7,7 @@ function BadgeCarrito() {
     if (items.length === 0) return null;
 
     return (
-        <span className="bg-verde text-white text-xs font-bold rounded-full px-2 py-0.5">
+        <span className="bg-accent text-paper text-xs font-bold rounded-full px-2 py-0.5">
             {items.length}
         </span>
     );
