@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard.jsx";
+import ProductoModal from "./ProductoModal.jsx";
 
 function Productos() {
     const [busqueda, setBusqueda] = useState("");
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
+    const [seleccionado, setSeleccionado] = useState(null);
     
     function cargarProductos() {
         setCargando(true);
@@ -54,11 +56,12 @@ function Productos() {
               {filtrados.map((p) => (
                 <ProductCard
                   key={p.id}
-                  id={p.id}
                   nombre={p.nombre}
                   descripcion={p.descripcion}
                   precio={p.precio}
                   imagen={p.imagen}
+                  id={p.id}
+                  onVer={() => setSeleccionado(p)}
                 />
               ))}
             </section>
@@ -69,6 +72,13 @@ function Productos() {
             <p className="text-center text-gray-500 py-10">
               No se encontraron productos con ese nombre.
             </p>
+          )}
+
+          {seleccionado && (
+            <ProductoModal
+            producto={seleccionado}
+            onCerrar={() => setSeleccionado(null)}
+            />
           )}
         </div>
       );
