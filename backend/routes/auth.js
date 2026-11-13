@@ -32,7 +32,7 @@ router.post("/registro", async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     // Guardar el usuario con la contraseña encriptada
-    const usuario = await Usuario.create({ nombre, email, password: hash, departamento, municipio, rol: 'ciente' });
+    const usuario = await Usuario.create({ nombre, email, password: hash, departamento, municipio, rol: 'cliente' });
 
     res.status(201).json({ mensaje: "Usuario creado correctamente", id: 
 usuario._id});

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Campo, { claseInput } from "./Campo";
 
 const URL_API = "http://localhost:4000/api/contacto";
 
@@ -16,24 +17,6 @@ const datosContacto = [
   { titulo: "Correo", lineas: ["info@miproyecto.co"] },
 ];
 
-const estiloInput =
-  "w-full px-4 py-3 rounded-xl border bg-paper text-ink text-sm focus:outline-none focus:border-ink transition-colors";
-
-function claseInput(error) {
-  return estiloInput + (error ? " border-accent" : " border-gray-300");
-}
-
-function Campo({ etiqueta, nombre, error, children }) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor={nombre} className="text-sm font-semibold text-ink">
-        {etiqueta}
-      </label>
-      {children}
-      {error && <span className="text-xs text-accent-dark">{error}</span>}
-    </div>
-  );
-}
 
 function Contacto() {
   const [form, setForm] = useState(FORM_VACIO);
