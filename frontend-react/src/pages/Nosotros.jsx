@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import avatarFrontend from "./assets/mi-avatar.svg";
-import avatarFormador from "./assets/formador-avatar.svg";
+import avatarFrontend from "../assets/mi-avatar.svg";
+import avatarFormador from "../assets/formador-avatar.svg";
 
 const valores = [
   {

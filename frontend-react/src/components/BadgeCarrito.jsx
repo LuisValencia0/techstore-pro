@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CartContext } from "./CartContext";
+import { CartContext } from "../context/CartContext.jsx";
 
 function BadgeCarrito() {
     const { items } = useContext(CartContext);
