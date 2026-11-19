@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect, useEffectEvent } from "react";
 
 export const CartContext = createContext();
 
@@ -8,25 +8,44 @@ export function CartProvider({ children }) {
         return guardado ? JSON.parse(guardado) : [];
     });
 
+    // Cada vez que cambia el carrito, se guarda solo
+    useEffectEvent(() => {
+        localStorage.setItem("carrito", JSON.stringify(items));
+    }, [items]);
+
     function agregarAlCarrito(producto) {
-        const nuevo = [...items, producto];
-        setItems(nuevo);
-        localStorage.setItem("carrito", JSON.stringify(nuevo));
+        const existe =items.find((item) => item.id === producto.id);
+        if (existe) {
+            setItems(
+                items.map((item) =>
+                item.id === producto.id ? {...item,cantidad: item.cantidad + 1 } :
+                item,
+                ),
+            );
+        } else {
+            setItems([...items, { ...producto, cantidad: 1}]);
+        }
     }
 
-    function quitarDelCarrito(indice) {
-        const nuevo = items.filter((_, i) => i !== indice);
-        setItems(nuevo);
-        localStorage.setItem("carrito", JSON.stringify(nuevo));
+    function cambiarCantidad(id, cambio) {
+        setItems(
+            items.map((item) =>
+            item.id === id ? { ...item, cantidad: item.cantidad + cambio } : item,
+        ),
+      );
+    }
+
+    function quitarDelCarrito(id) {
+        setItems(items.filter((item) => item.id !== id));
     }
 
     function vaciarCarrito() {
         setItems([]);
-        localStorage.removeItem("carrito");
     }
 
     return (
-        <CartContext.Provider value={{ items, agregarAlCarrito, quitarDelCarrito, vaciarCarrito }}>
+        <CartContext.Provider value={{ items, agregarAlCarrito, cambiarCantidad, quitarDelCarrito, vaciarCarrito }}
+        >
             {children}
         </CartContext.Provider>
     );
