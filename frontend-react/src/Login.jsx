@@ -8,7 +8,7 @@ const URL_API = "http://localhost:4000/api/auth";
 const FORM_VACIO = { email: "", password: "" };
 
 function Login() {
-  const login = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navegar = useNavigate();
   const ubicacion = useLocation();
   const aviso = ubicacion.state ? ubicacion.state.aviso : null;
@@ -20,7 +20,7 @@ function Login() {
   function manejarCambio(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrores({ ...errores, [e.target.name]: "" });
-    if (estado === "inactivo") setEstado("inactivo");
+    if (estado !== "inactivo") setEstado("inactivo");
   }
 
   function validar() {
