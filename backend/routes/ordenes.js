@@ -66,14 +66,16 @@ router.get('/admin/todas', verificarToken, verificarAdmin, async (req, res) => {
 });
 
 // GET/ api/ordenes - mis ordenes
-// Cada usuario ve solo sus propias ordenes
+// Cada usuario ve solo sus propias ordenes:  el servidor sabe quien es por el token
+// (req.usuario.id), no por un dato que mande el navegador.
+//Las mas nuevas primero, y con el nombre, el precio y la imagen de cada producto.
 
 router.get('/', verificarToken, async (req, res) => {
     try {
         const ordenes = await Orden
         .find({ usuario: req.usuario.id })
-        .populate('usuario', 'nombre email')
-        .populate('productos.producto', 'nombre precio');
+        .populate('productos.producto', 'nombre precio imagen')
+        .sort({ createdAt: -1 });
       res.json(ordenes);
     } catch (err) {
         res.status(500).json({ error: err.message });
