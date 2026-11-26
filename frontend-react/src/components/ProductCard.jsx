@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext.jsx";
+import BotonFavorito from "./BotonFavorito.jsx";
 
 function ProductCard(props) {
   const { agregarAlCarrito } = useContext(CartContext);
@@ -32,6 +33,11 @@ function ProductCard(props) {
         <span className="absolute top-4 left-4 bg-paper/90 text-ink rounded-full px-3 py-1.5 font-mono text-[11px] font-bold tracking-wider backdrop-blur-sm">
           REF {String(props.id).padStart(2, "0")}
         </span>
+
+        <BotonFavorito
+        producto={{ id: props.id, nombre: props.nombre, precio: props.precio, imagen: props.imagen }}
+        className="absolute top-4 right-4"
+        />
 
         {/* Contenido de la tarjeta */}
         <div className="absolute inset-x-5 bottom-5 flex flex-col gap-2.5 text-white">

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Campo, { claseInput } from "../components/Campo.jsx";
+import useColombia from "../hooks/useColombia.js";
 
-const URL_API = "http://localhost:4000/api/auth";
-const URL_COLOMBIA = "https://api-colombia.com/api/v1";
+const URL_API = "http://localhost:3000/api/auth";
 
 const FORM_VACIO = {
   nombre: "",
@@ -14,47 +14,13 @@ const FORM_VACIO = {
   municipio: "",
 };
 
-function porNombre(a, b) {
-  return a.name.localeCompare(b.name);
-}
-
 function Registro() {
   const navegar = useNavigate();
   const [form, setForm] = useState(FORM_VACIO);
   const [errores, setErrores] = useState({});
   const [estado, setEstado] = useState("inactivo");
   const [mensajeError, setMensajeError] = useState("");
-  const [departamentos, setDepartamentos] = useState([]);
-  const [municipios, setMunicipios] = useState([]);
-
-  const elegido = departamentos.find((d) => d.name === form.departamento);
-  const departamentoId = elegido ? elegido.id : null;
-
-  useEffect(() => {
-    fetch(URL_COLOMBIA + "/Department")
-      .then((res) => res.json())
-      .then((datos) => setDepartamentos(datos.sort(porNombre)))
-      .catch(() => setDepartamentos([]));
-  }, []);
-
-  useEffect(() => {
-    if (!departamentoId) {
-      setMunicipios([]);
-      return;
-    }
-    let vigente = true;
-    fetch(URL_COLOMBIA + "/Department/" + departamentoId + "/cities")
-      .then((res) => res.json())
-      .then((datos) => {
-        if (vigente) setMunicipios(datos.sort(porNombre));
-      })
-      .catch(() => {
-        if (vigente) setMunicipios([]);
-      });
-    return () => {
-      vigente = false;
-    };
-  }, [departamentoId]);
+  const { departamentos, municipios } = useColombia(form.departamento);
 
   function manejarCambio(e) {
     const { name, value } = e.target;
@@ -62,7 +28,7 @@ function Registro() {
     if (name === "departamento") nuevos.municipio = "";
     setForm(nuevos);
     setErrores({ ...errores, [name]: "" });
-    if (estado === "inactivo") setEstado("inactivo");
+    if (estado !== "inactivo") setEstado("inactivo");
   }
 
   function validar() {

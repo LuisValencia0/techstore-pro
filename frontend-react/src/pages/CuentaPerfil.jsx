@@ -1,10 +1,17 @@
+import { useState } from "react";
 import useApi from "../hooks/useApi.js";
+import FormPerfil from "../components/FormPerfil.jsx";
 
 function CuentaPerfil() {
-  const { datos: perfil, cargando, error } = useApi("/api/auth/perfil");
+  const { datos, cargando, error } = useApi("/api/auth/perfil");
+  const [guardado, setGuardado] = useState(null); // los datos nuevos, despues de guardar
+  const [editando, setEditando] = useState(false);
 
   if (cargando) return <p className="py-10 text-gray-700">Cargando tu perfil…</p>;
   if (error) return <p className="py-10 text-accent-dark">{error}</p>;
+
+  // si ya se guardaron los cambios, se muestran esos; si no, los que llegaron del servidor 
+  const perfil = guardado || datos;
 
   // Cada fila del perfil: una etiqueta y su valor
   const filas = [
@@ -34,6 +41,25 @@ function CuentaPerfil() {
         </div>
       </div>
 
+      {guardado && !editando && (
+        <p role="status" className="bg-gray-50 rounded-card p-4 text-sm font-semibold">
+          Tus datos se guardaron.
+        </p>
+      )}
+
+      {editando ? (
+        <FormPerfil
+          perfil={perfil}
+          onGuardado={(nuevos) => {
+            setGuardado(nuevos);
+            setEditando(false);
+          }}
+          onCancelar={() => setEditando(false)}
+        />
+      ) : (
+        <>
+
+
       <dl className="border border-gray-300 rounded-card divide-y divide-gray-200">
         {filas.map((fila) => (
           <div key={fila.etiqueta} className="flex flex-wrap justify-between gap-2 px-6 py-4">
@@ -42,6 +68,14 @@ function CuentaPerfil() {
           </div>
         ))}
       </dl>
+      <button
+            onClick={() => setEditando(true)}
+            className="self-start bg-ink text-paper px-6 py-3 rounded-card text-sm font-semibold hover:bg-accent transition-colors"
+          >
+            Editar mis datos
+          </button>
+        </>
+      )}
     </div>
   );
 }

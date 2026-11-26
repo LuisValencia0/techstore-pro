@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext.jsx";
+import BotonFavorito from "../components/BotonFavorito.jsx";
 
 function ProductoDetalle() {
   const { id } = useParams();
@@ -61,38 +62,48 @@ function ProductoDetalle() {
   }
 
   return (
-    <div className="flex flex-col gap-8">
-      <Link
-        to="/productos"
-        className="text-sm font-semibold text-gray-700 hover:text-ink transition-colors"
-      >
-        ← Volver al catálogo
-      </Link>
+      <div className="flex flex-col gap-8">
+        <Link
+          to="/productos"
+          className="text-sm font-semibold text-gray-700 hover:text-ink transition-colors"
+        >
+          ← Volver al catálogo
+        </Link>
 
-      <div className="grid gap-10 md:grid-cols-2">
-        <img
-          src={producto.imagen.replace("w=400&h=250", "w=1000&h=1250")}
-          alt={producto.nombre}
-          className="w-full aspect-[4/5] object-cover rounded-3xl"
-        />
+        <div className="grid gap-10 md:grid-cols-2">
+          <img
+            src={producto.imagen.replace("w=400&h=250", "w=1000&h=1250")}
+            alt={producto.nombre}
+            className="w-full aspect-[4/5] object-cover rounded-3xl"
+          />
 
-        <div className="flex flex-col gap-5 md:py-6">
-          <span className="font-mono text-[11px] font-bold tracking-wider text-gray-500">
-            REF {String(producto.id).padStart(2, "0")}
-          </span>
-          <h1 className="font-display font-bold text-4xl md:text-5xl tracking-tight leading-tight">
-            {producto.nombre}
-          </h1>
-          <p className="text-gray-700 text-lg leading-relaxed">
-            {producto.descripcion}
-          </p>
-          <p className="font-mono text-3xl font-bold">{producto.precio}</p>
-          <button
-            onClick={agregar}
-            className="mt-4 bg-ink text-paper rounded-card py-4 text-sm font-semibold hover:bg-accent transition-colors"
-          >
-            Agregar al carrito
-          </button>
+          <div className="flex flex-col gap-5 md:py-6">
+            <span className="font-mono text-[11px] font-bold tracking-wider text-gray-500">
+              REF {String(producto.id).padStart(2, "0")}
+            </span>
+            <h1 className="font-display font-bold text-4xl md:text-5xl tracking-tight leading-tight">
+              {producto.nombre}
+            </h1>
+            <p className="text-gray-700 text-lg leading-relaxed">
+              {producto.descripcion}
+            </p>
+            <p className="font-mono text-3xl font-bold">{producto.precio}</p>
+            <div className="mt-4 flex items-center gap-3">
+            <button
+              onClick={agregar}
+              className="flex-1 bg-ink text-paper rounded-card py-4 text-sm font-semibold hover:bg-accent transition-colors"
+              >
+              Agregar al carrito
+            </button>
+            <BotonFavorito
+              producto={{
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                imagen: producto.imagen,
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
